@@ -185,18 +185,22 @@ def plot_solution(u, xr, yr, title="WiFi field"):
     plt.show()
 
 # STEP 4: SCORING
-def average_in_circle(field, xc, yc, radius):
-    rr = np.sqrt((X - xc) ** 2 + (Y - yc) ** 2)
-    mask = rr <= radius
-    if not np.any(mask):
+def measure_signal(u, xm, ym):
+    r = 0.05  # 5 cm
+
+    mask = (X - xm)**2 + (Y - ym)**2 <= r**2
+    values = np.abs(u[mask])
+
+    if len(values) == 0:
         return 0.0
-    return np.mean(np.abs(field[mask]))
+
+    return np.mean(values)
 
 
 def score_field(u):
     vals = []
     for px, py in measurement_points:
-        vals.append(average_in_circle(u, px, py, measurement_radius))
+        vals.append(measure_signal(u, px, py))
     return np.sum(vals), vals
 
 def distance_to_nearest_wall(xr, yr):
