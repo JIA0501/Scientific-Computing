@@ -159,7 +159,8 @@ def solve_helmholtz(xr, yr):
     return u.reshape((Ny, Nx))
 
 
-def plot_solution(u, xr, yr, title="WiFi field"):
+
+def plot_solution(u, xr, yr, title="WiFi field", filename=None):
     plt.figure(figsize=(9, 6))
     signal_db = 20 * np.log10(np.abs(u) + 1e-12)
 
@@ -167,21 +168,20 @@ def plot_solution(u, xr, yr, title="WiFi field"):
     plt.colorbar(label="20 log10 |u|")
 
     wy, wx = np.where(wall_mask)
-    plt.scatter(wx * h, wy * h, s=3, c="black", label="walls")
+    plt.scatter(wx * h, wy * h, s=3, c="black")
 
-    plt.scatter(
-        measurement_points[:, 0], measurement_points[:, 1],
-        marker="o", s=70, facecolors="none", edgecolors="white", linewidths=2,
-        label="measurement points"
-    )
+    plt.scatter(measurement_points[:,0], measurement_points[:,1],
+                facecolors="none", edgecolors="white")
 
-    plt.scatter([xr], [yr], marker="*", s=180, c="red", label="router")
+    plt.scatter([xr], [yr], c="red", marker="*")
 
+    plt.title(title)
     plt.xlabel("x [m]")
     plt.ylabel("y [m]")
-    plt.title(title)
-    plt.legend(loc="upper right")
     plt.tight_layout()
+    if filename:
+        plt.savefig(filename, dpi=300)
+
     plt.show()
 
 # STEP 4: SCORING
@@ -287,7 +287,7 @@ def refine_search(x_center, y_center, half_width=1.0, step=0.5):
     results.sort(key=lambda t: t[0], reverse=True)
     return results
 
-def plot_score_map(results):
+def plot_score_map(results, filename=None):
     xs = [r[1] for r in results]
     ys = [r[2] for r in results]
     ss = [r[0] for r in results]
@@ -299,7 +299,12 @@ def plot_score_map(results):
     plt.ylabel("y [m]")
     plt.title("Router candidate scores")
     plt.tight_layout()
+    if filename:
+        plt.savefig(filename, dpi=300)
+
     plt.show()
+
+    
 # MAIN
 if __name__ == "__main__":
     print("RUN_STEP =", RUN_STEP)
