@@ -1,0 +1,1 @@
+/usr/bin/c++  -fopenmp -O3 -DNDEBUG CMakeFiles/set3_chA.dir/src/main.cpp.o CMakeFiles/set3_chA.dir/src/Utils.cpp.o CMakeFiles/set3_chA.dir/src/Probe.cpp.o CMakeFiles/set3_chA.dir/src/FDSolver.cpp.o CMakeFiles/set3_chA.dir/src/LBMSolver.cpp.o -o set3_chA 
